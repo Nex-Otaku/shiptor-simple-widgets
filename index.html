@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Подключение виджетов Shiptor</title>
+    <style>
+        html, body {
+            height:100%;
+        }
+
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
+<!-- Checkout -->
+<div
+        id="shiptor_widget"
+        class="_shiptor_widget"
+        data-wk="C5XGJH0NTOM1DM1XL7V09HCA9M6NSNE2FQYU36779"
+        style="display: none"
+></div>
+
+<!-- Calc-Delivery -->
+<div id="shiptor_widget_delivery" class="_shiptor_widget"></div>
+
+<!-- Shipping Terminals Map -->
+<div id="shiptor_widget_pvz" class="_shiptor_widget"></div>
+
+<!-- Shipment Tracker -->
+<div id="shiptor_widget_tracking" class="shiptor-widget" data-mode="popup"></div>
+
+<div class="content">
+    <div class="controls">
+        <p>
+            <a href="#" data-role="shiptor_widget_add_basket" data-id="1" data-q="1">Купить ботинок</a>
+        </p>
+        <p>
+            <a href="#" id="show-calc">Показать калькулятор доставки</a>
+        </p>
+        <p>
+            <a href="#" id="show-pvz">Показать карту пунктов выдачи</a>
+        </p>
+        <p>
+            <a href="#" id="show-tracking">Показать виджет трекинга заказов</a>
+        </p>
+    </div>
+</div>
+
+<!-- Костыль, чтобы виджет по умолчанию не показывал окошко -->
+<div data-role="shiptor_widget_show" style="display: none"></div>
+
 <script type="text/javascript" src="https://checkout.shiptor.ru/embed/order.js"></script>
+<script type="text/javascript" src="https://widget.shiptor.ru/embed/widget.js"></script>
+<script type="text/javascript" src="https://widget.shiptor.ru/embed/widget-pvz.js"></script>
+<script type="text/javascript" src="https://widget.shiptor.ru/embed/widget-track.js"></script>
+
+<script type="text/javascript">
+	document.getElementById('show-calc').addEventListener('click', function (event) {
+		event.preventDefault();
+        // В документации написано, что вызвать надо "show".
+        // Но этот метод не работает.
+        // Через декомпиляцию исходного кода выяснил, что вызывать надо "init".
+		window.ShiptorWidget.init();
+	});
+
+	document.getElementById('show-pvz').addEventListener('click', function (event) {
+		event.preventDefault();
+		window.JCShiptorWidgetPvz.init();
+	});
+
+	document.getElementById('show-tracking').addEventListener('click', function (event) {
+		event.preventDefault();
+		window.ShiptorWidgetTracking.init();
+	});
+</script>
 </body>
 </html>
